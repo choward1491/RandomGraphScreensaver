@@ -24,11 +24,11 @@
     if (self) {
         
         // set the animation time interval
-        [self setAnimationTimeInterval:1/30.0];
+        [self setAnimationTimeInterval: 1.0/30.0];
         
         // set the simulation traits
         self->sim_traits.time = 0.0;
-        self->sim_traits.dt = 1/30.0;
+        self->sim_traits.dt = 1.0/30.0;
         self->sim_traits.attractor_pos[0] = frame.size.width*0.5;
         self->sim_traits.attractor_pos[1] = frame.size.height*0.5;
         
@@ -108,13 +108,18 @@
     // draw the graph
     [self drawGraph: ctx];
     
-    // update the graph
-    sim::version2::multibody_sim( self->graph, self->sim_traits );
 }
 
 - (void)animateOneFrame
 {
+    // draw the graph to the scene
     [self drawScene];
+    
+    // update the graph
+    sim::version2::multibody_sim( self->graph, self->sim_traits );
+    
+    // force the screen to be updated
+    [self setNeedsDisplay: true];
 }
 
 - (BOOL)hasConfigureSheet
